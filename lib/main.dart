@@ -28,16 +28,36 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text('GestureDetector'),
+        title: Text('Diferentes botonres'),
       ),
       body: Center(
           child: Column(
             children: [
-              ListItem(titulo: "Vídeos", icono: Icons.folder),
-              ListItem(titulo: "Fotos", icono: Icons.folder),
-              ListItem(titulo: "Android", icono: Icons.folder),
-              ListItem(titulo: "DCMI", icono: Icons.folder),
-              ListItem(titulo: "XD", icono: Icons.folder),
+              RaisedButton(
+                color: Colors.purpleAccent[700],
+                textColor: Colors.black,
+                child: Text("RaisedButton"),
+                onPressed: _onPressed,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)
+                ),
+              ),
+              FlatButton(
+                  child: Text("FlatButton"),
+                onPressed: _onPressed,
+              ),
+              IconButton(
+                  onPressed: _onPressed,
+                  icon: Icon(Icons.add)
+              ),
+              OutlineButton(
+                  child: Text("OutlineButton"),
+                  onPressed: _onPressed,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25)
+                ),
+                borderSide: BorderSide(color: Colors.purpleAccent),
+              )
             ],
           )
       ),
@@ -47,37 +67,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
 
-}
 
-class ListItem extends StatelessWidget {
-  ListItem({
-    required this.titulo,
-    required this.icono,
-  });
-  final String titulo;
-  final IconData icono;
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return GestureDetector(
-      onTap: _onTap,
-      child: Padding(
-        padding: const EdgeInsets.all(9.0),
-        child: Row(
-          children: [
-            Icon(icono),
-            SizedBox(
-              width: 20,
-            ),
-            Text(titulo)
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _onTap() {
-    print("Se presiono");
+  void _onPressed() {
+    print("Holaaa");
   }
 }
