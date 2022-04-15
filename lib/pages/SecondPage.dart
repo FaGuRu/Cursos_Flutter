@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class SecondPage extends StatelessWidget {
   const SecondPage({Key? key}) : super(key: key);
@@ -13,7 +14,14 @@ class SecondPage extends StatelessWidget {
         title: const Text("Pantalla #2"),
       ),
       body: Center(
-        child: Text(persona.name),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children:[
+            Text(persona.name),
+            Divider(),
+            Text(persona.lastName),
+          ]
+        ),
       ),
     );
   }
