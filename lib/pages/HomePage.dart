@@ -51,10 +51,18 @@ class _MyHomePageState extends State<MyHomePage> {
                   return null;
                 },
               ),
+              TextFormField(
+                decoration: InputDecoration(labelText: "Número de teléfono"),
+                keyboardType: TextInputType.phone,
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: "email"),
+                keyboardType: TextInputType.emailAddress,
+              ),
 
               //Botón
               RaisedButton(
-                  color: Colors.green[600],
+                  color: Colors.grey,
                   textColor: Colors.black,
                   child: Text("Segunda pantalla"),
                   onPressed: (){
