@@ -7,9 +7,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  //Utilizamos controladores para los input
-  late TextEditingController nameTextController;
-  late TextEditingController lastnameTextController;
+
+  late String nameValue;
+  late String lastnameValue;
+  //Para utilizar el formulario necesitamos una GlobalKEY
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -20,52 +22,58 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children:[
-            //Campos de texto
-             TextField(
-              decoration: InputDecoration(labelText: "Nombre"),
-              controller: nameTextController,
-            ),
-             TextField(
-              decoration: InputDecoration(labelText: "Apellido"),
-              controller: lastnameTextController,
-            ),
+        child: Form(
+          key: formKey,
+          child: Column(
+            children:[
+              //Campos de texto
+              TextFormField(
+                decoration: InputDecoration(labelText: "Nombre"),
+                onSaved: (value){
+                  nameValue = value!;
+                },
+                validator: (value){
+                  if(value!.isEmpty){
+                    return"Lllene el campo";
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: "Apellido"),
+                onSaved: (value){
+                  lastnameValue = value!;
+                },
+                validator: (value){
+                  if(value!.isEmpty){
+                    return"Lllene el campo";
+                  }
+                  return null;
+                },
+              ),
 
-            //Botón
-            RaisedButton(
-                color: Colors.green[600],
-                textColor: Colors.black,
-                child: Text("Segunda pantalla"),
-                onPressed: (){
-                  _secondPage(context);
-                }),
-          ],
-        ),
+              //Botón
+              RaisedButton(
+                  color: Colors.green[600],
+                  textColor: Colors.black,
+                  child: Text("Segunda pantalla"),
+                  onPressed: (){
+                    _secondPage(context);
+                  }),
+            ],
+          ),
+        )
       ),
     );
   }
 
   void _secondPage(BuildContext context) {
-    Navigator.of(context).pushNamed("/second",
-        arguments: SecondPageArguments(name: nameTextController.text, lastName: lastnameTextController.text));
+    if(formKey.currentState!.validate()){
+      print("Hola");
+      formKey.currentState!.save();
+      Navigator.of(context).pushNamed("/second",
+          arguments: SecondPageArguments(name: nameValue, lastName: lastnameValue));
+    }
   }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    //Utilizamos controladores para los input
-    nameTextController = TextEditingController();
-    lastnameTextController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    //Destruimos los controladores despues de usarlos
-    nameTextController.dispose();
-    lastnameTextController.dispose();
-  }
 }
