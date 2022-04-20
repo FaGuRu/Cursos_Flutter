@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hello_word/pages/SecondPage.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -10,6 +11,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   late String nameValue;
   late String lastnameValue;
+  //FocusNode
+  late FocusNode nameFocus;
+  late FocusNode lastnameFocus;
+  late FocusNode telFocus;
+  late FocusNode emailFocus;
+  late FocusNode ageFocus;
+  late FocusNode webFocus;
+
   //Para utilizar el formulario necesitamos una GlobalKEY
   final formKey = GlobalKey<FormState>();
 
@@ -38,6 +47,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   }
                   return null;
                 },
+                focusNode: nameFocus,
+                onEditingComplete: (){
+                  requestFocus(context, lastnameFocus);
+                },
+                textInputAction: TextInputAction.next,
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: "Apellido"),
@@ -50,20 +64,46 @@ class _MyHomePageState extends State<MyHomePage> {
                   }
                   return null;
                 },
+                focusNode: lastnameFocus,
+                onEditingComplete: (){
+                  requestFocus(context, telFocus);
+                },
+                textInputAction: TextInputAction.next,
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: "Número de teléfono"),
                 keyboardType: TextInputType.phone,
+                focusNode: telFocus,
+                onEditingComplete: (){
+                  requestFocus(context, emailFocus);
+                },
+                textInputAction: TextInputAction.next,
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: "email"),
+                decoration: InputDecoration(labelText: "Email"),
                 keyboardType: TextInputType.emailAddress,
+                focusNode: emailFocus,
+                onEditingComplete: (){
+                  requestFocus(context, ageFocus);
+                },
+                textInputAction: TextInputAction.next,
               ),
-
+              TextFormField(
+                decoration: InputDecoration(labelText: "Edad"),
+                keyboardType: TextInputType.number,
+                focusNode: ageFocus,
+                onEditingComplete: (){
+                  requestFocus(context, webFocus);
+                },
+                textInputAction: TextInputAction.next,
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: "Web"),
+                keyboardType: TextInputType.url,
+                focusNode: webFocus,
+              ),
               //Botón
               RaisedButton(
-                  color: Colors.grey,
-                  textColor: Colors.black,
                   child: Text("Segunda pantalla"),
                   onPressed: (){
                     _secondPage(context);
@@ -75,13 +115,40 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void requestFocus(BuildContext context, FocusNode focusNode){
+    FocusScope.of(context).requestFocus(focusNode);
+  }
+
   void _secondPage(BuildContext context) {
     if(formKey.currentState!.validate()){
-      print("Hola");
       formKey.currentState!.save();
       Navigator.of(context).pushNamed("/second",
           arguments: SecondPageArguments(name: nameValue, lastName: lastnameValue));
     }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    nameFocus.dispose();
+    lastnameFocus.dispose();
+    telFocus.dispose();
+    emailFocus.dispose();
+    ageFocus.dispose();
+    webFocus.dispose();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    nameFocus = FocusNode();
+    lastnameFocus = FocusNode();
+    telFocus = FocusNode();
+    emailFocus = FocusNode();
+    ageFocus = FocusNode();
+    webFocus = FocusNode();
   }
 
 }
